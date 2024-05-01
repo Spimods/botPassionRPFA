@@ -6,6 +6,9 @@ import pytz
 import time
 import requests
 import asyncio
+import os
+
+TOKEN = os.environ.get('DISCORD_BOT_TOKEN')
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="/", intents=intents)
@@ -140,4 +143,4 @@ async def on_disconnect():
     conn.close()
 
 
-bot.run(process.env.TOKEN)
+bot.run(TOKEN)
