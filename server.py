@@ -111,7 +111,7 @@ async def slash_command(ctx: discord.interactions.Interaction):
 async def slash_command(ctx: discord.interactions.Interaction):
     response = requests.get("http://213.199.55.142:30120/players.json")
     if response.status_code == 200:
-        embed = discord.Embed(title="Liste des joueurs en ligne", color=0xFFFFFF)  # Adding a title to the embed
+        embed = discord.Embed(title="Liste des joueurs en ligne", color=0xFFFFFF) 
         noms = []
         ids = []
         discordids = []
@@ -140,4 +140,4 @@ async def on_disconnect():
     conn.close()
 
 
-bot.run('')
+bot.run(process.env.TOKEN)
