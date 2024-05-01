@@ -62,40 +62,40 @@ async def on_ready():
 #    conn.commit()
 
 
-@bot.event
-async def on_reaction_add(reaction, user):
-    if reaction.emoji == '🔴' and not user.bot:
-        await reaction.message.delete()
-    elif reaction.emoji == '⚪' and not user.bot: 
-        embed = reaction.message.embeds[0]
-        if "À faire" not in embed.title and "En cours" not in embed.title and "Terminé" not in embed.title:
-            embed.title = f"À faire: {embed.title}" 
-        elif "En cours" in embed.title:
-            embed.title = embed.title.replace("En cours", "À faire")
-        elif "Terminé" in embed.title:
-            embed.title = embed.title.replace("Terminé", "À faire")
-        embed.color = 0x808080
-        await reaction.message.edit(embed=embed)
-    elif reaction.emoji == '🟢' and not user.bot: 
-        embed = reaction.message.embeds[0]
-        if "Terminé" not in embed.title and "En cours" not in embed.title and "À faire" not in embed.title:
-            embed.title = f"Terminé: {embed.title}" 
-        elif "En cours" in embed.title:
-            embed.title = embed.title.replace("En cours", "Terminé")
-        elif "À faire" in embed.title:
-            embed.title = embed.title.replace("À faire", "Terminé")
-        embed.color = 0x00FF00 
-        await reaction.message.edit(embed=embed)
-    elif reaction.emoji == '🟠' and not user.bot:
-        embed = reaction.message.embeds[0] 
-        if "En cours" not in embed.title and "Terminé" not in embed.title and "À faire" not in embed.title:
-            embed.title = f"En cours: {embed.title}"
-        elif "Terminé" in embed.title:
-            embed.title = embed.title.replace("Terminé", "En cours") 
-        elif "À faire" in embed.title:
-            embed.title = embed.title.replace("À faire", "En cours")
-        embed.color = 0xFFA500
-        await reaction.message.edit(embed=embed)
+#@bot.event
+#async def on_reaction_add(reaction, user):
+#    if reaction.emoji == '🔴' and not user.bot:
+#        await reaction.message.delete()
+#    elif reaction.emoji == '⚪' and not user.bot: 
+#        embed = reaction.message.embeds[0]
+#        if "À faire" not in embed.title and "En cours" not in embed.title and "Terminé" not in embed.title:
+#            embed.title = f"À faire: {embed.title}" 
+#        elif "En cours" in embed.title:
+#            embed.title = embed.title.replace("En cours", "À faire")
+#        elif "Terminé" in embed.title:
+#            embed.title = embed.title.replace("Terminé", "À faire")
+#        embed.color = 0x808080
+#        await reaction.message.edit(embed=embed)
+#    elif reaction.emoji == '🟢' and not user.bot: 
+#        embed = reaction.message.embeds[0]
+#        if "Terminé" not in embed.title and "En cours" not in embed.title and "À faire" not in embed.title:
+#            embed.title = f"Terminé: {embed.title}" 
+#         elif "En cours" in embed.title:
+#        embed.title = embed.title.replace("En cours", "Terminé")
+#        elif "À faire" in embed.title:
+#            embed.title = embed.title.replace("À faire", "Terminé")
+#        embed.color = 0x00FF00 
+#        await reaction.message.edit(embed=embed)
+#    elif reaction.emoji == '🟠' and not user.bot:
+#        embed = reaction.message.embeds[0] 
+#        if "En cours" not in embed.title and "Terminé" not in embed.title and "À faire" not in embed.title:
+#            embed.title = f"En cours: {embed.title}"
+#        elif "Terminé" in embed.title:
+#            embed.title = embed.title.replace("Terminé", "En cours") 
+#        elif "À faire" in embed.title:
+#            embed.title = embed.title.replace("À faire", "En cours")
+#        embed.color = 0xFFA500
+#        await reaction.message.edit(embed=embed)
 
 @bot.tree.command(name="players",description="Affiche le nombre de joueurs en ligne.")
 async def slash_command(ctx: discord.interactions.Interaction):
