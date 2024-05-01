@@ -14,4 +14,4 @@ COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Run the specified command within the container
-CMD ["python", "bot.py"]
+CMD ["run", "bot.py"]
