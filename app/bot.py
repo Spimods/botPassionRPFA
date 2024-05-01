@@ -140,4 +140,4 @@ async def slash_command(ctx: discord.interactions.Interaction):
 #    conn.close()
 
 
-bot.run(TOKEN)
+bot.run(process.env.TOKEN)
