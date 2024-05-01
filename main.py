@@ -103,7 +103,8 @@ async def on_ready():
 
 @bot.tree.command(name="players", description="Affiche le nombre de joueurs en ligne.")
 async def slash_command(ctx: discord.interactions.Interaction):
-    if any(role.name in allowed_roles for role in ctx.author.roles):
+    print(ctx.user.roles)
+    if any(role.name in allowed_roles for role in ctx.user.roles):
         response = requests.get("http://213.199.55.142:30120/dynamic.json")
         if response.status_code == 200:
             embed = discord.Embed(color=0xFFFFFF)
@@ -116,7 +117,8 @@ async def slash_command(ctx: discord.interactions.Interaction):
 
 @bot.tree.command(name="playersliste", description="Affiche la liste de tous les joueurs en ligne.")
 async def slash_command(ctx: discord.interactions.Interaction):
-    if any(role.name in allowed_roles for role in ctx.author.roles):
+    print(ctx.user.roles)
+    if any(role.name in allowed_roles for role in ctx.user.roles):
         response = requests.get("http://213.199.55.142:30120/players.json")
         if response.status_code == 200:
             embed = discord.Embed(title="Liste des joueurs en ligne", color=0xFFFFFF) 
