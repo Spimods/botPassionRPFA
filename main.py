@@ -9,6 +9,7 @@ import asyncio
 import os
 
 TOKEN = os.environ.get('DISCORD_BOT_TOKEN')
+allowed_roles = ["Staff", "Developer"]
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="/", intents=intents)
@@ -100,38 +101,44 @@ async def on_ready():
 #        embed.color = 0xFFA500
 #        await reaction.message.edit(embed=embed)
 
-@bot.tree.command(name="players",description="Affiche le nombre de joueurs en ligne.")
+@bot.tree.command(name="players", description="Affiche le nombre de joueurs en ligne.")
 async def slash_command(ctx: discord.interactions.Interaction):
-    response = requests.get("http://213.199.55.142:30120/dynamic.json")
-    if response.status_code == 200:
-        embed = discord.Embed(color=0xFFFFFF)
-        embed.add_field(name="Joueurs", value=f"{response.json()['clients']}/{response.json()['sv_maxclients']}", inline=False)
-        await ctx.response.send_message(embed=embed)
+    if any(role.name in allowed_roles for role in ctx.author.roles):
+        response = requests.get("http://213.199.55.142:30120/dynamic.json")
+        if response.status_code == 200:
+            embed = discord.Embed(color=0xFFFFFF)
+            embed.add_field(name="Joueurs", value=f"{response.json()['clients']}/{response.json()['sv_maxclients']}", inline=False)
+            await ctx.response.send_message(embed=embed)
+        else:
+            await ctx.response.send_message("Impossible d'obtenir les données du serveur.")
     else:
-        await ctx.response.send_message("Impossible d'obtenir les données du serveur.")
+        await ctx.response.send_message("Vous n'avez pas la permission d'exécuter cette commande.")
 
 @bot.tree.command(name="playersliste", description="Affiche la liste de tous les joueurs en ligne.")
 async def slash_command(ctx: discord.interactions.Interaction):
-    response = requests.get("http://213.199.55.142:30120/players.json")
-    if response.status_code == 200:
-        embed = discord.Embed(title="Liste des joueurs en ligne", color=0xFFFFFF) 
-        noms = []
-        ids = []
-        discordids = []
-        fivemids = []
-        for element in response.json():
-            noms.append(element["name"])
-            ids.append(element["id"])
-            for identifier in element["identifiers"]:
-                if "discord" in identifier:
-                    discordids.append(identifier.split(":")[1]) 
-                if "fivem" in identifier:
-                    fivemids.append(identifier.split(":")[1]) 
-        for nom, identifiant, discordid, fivemid in zip(noms, ids, discordids, fivemids):
-            embed.add_field(name=nom, value=f"ID : {identifiant}, Discord : <@{discordid}> ({discordid}), FiveM : {fivemid}", inline=False)
-        await ctx.response.send_message(embed=embed) 
+    if any(role.name in allowed_roles for role in ctx.author.roles):
+        response = requests.get("http://213.199.55.142:30120/players.json")
+        if response.status_code == 200:
+            embed = discord.Embed(title="Liste des joueurs en ligne", color=0xFFFFFF) 
+            noms = []
+            ids = []
+            discordids = []
+            fivemids = []
+            for element in response.json():
+                noms.append(element["name"])
+                ids.append(element["id"])
+                for identifier in element["identifiers"]:
+                    if "discord" in identifier:
+                        discordids.append(identifier.split(":")[1]) 
+                    if "fivem" in identifier:
+                        fivemids.append(identifier.split(":")[1]) 
+            for nom, identifiant, discordid, fivemid in zip(noms, ids, discordids, fivemids):
+                embed.add_field(name=nom, value=f"ID : {identifiant}, Discord : <@{discordid}> ({discordid}), FiveM : {fivemid}", inline=False)
+            await ctx.response.send_message(embed=embed) 
+        else:
+            await ctx.response.send_message("Impossible d'obtenir les données du serveur.")
     else:
-        await ctx.response.send_message("Impossible d'obtenir les données du serveur.")
+        await ctx.response.send_message("Vous n'avez pas la permission d'exécuter cette commande.")
 
 @bot.tree.command(name="invite", description="Le lien d'invitation.")
 async def slash_command(ctx: discord.interactions.Interaction):
