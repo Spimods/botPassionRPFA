@@ -9,7 +9,7 @@ import asyncio
 import os
 
 TOKEN = os.environ.get('DISCORD_BOT_TOKEN')
-allowed_roles = ["test", "Developer"]
+allowed_roles = ["Staff", "Developer"]
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="/", intents=intents)
